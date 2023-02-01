@@ -15,7 +15,12 @@ func generateNormalHeaders(c Config) http.Header {
 		headers.Set("Access-Control-Allow-Credentials", "true")
 	}
 	if len(c.ExposeHeaders) > 0 {
-		exposeHeaders := convert(normalize(c.ExposeHeaders), http.CanonicalHeaderKey)
+		var exposeHeaders []string
+		if c.UseLowerCaseHeaders {
+			exposeHeaders = convert(normalize(c.ExposeHeaders), strings.ToLower)
+		} else {
+			exposeHeaders = convert(normalize(c.ExposeHeaders), http.CanonicalHeaderKey)
+		}
 		headers.Set("Access-Control-Expose-Headers", strings.Join(exposeHeaders, ","))
 	}
 	if c.AllowAllOrigins {
@@ -37,7 +42,12 @@ func generatePreflightHeaders(c Config) http.Header {
 		headers.Set("Access-Control-Allow-Methods", value)
 	}
 	if len(c.AllowHeaders) > 0 {
-		allowHeaders := convert(normalize(c.AllowHeaders), http.CanonicalHeaderKey)
+		var allowHeaders []string
+		if c.UseLowerCaseHeaders {
+			allowHeaders = convert(normalize(c.AllowHeaders), strings.ToLower)
+		} else {
+			allowHeaders = convert(normalize(c.AllowHeaders), http.CanonicalHeaderKey)
+		}
 		value := strings.Join(allowHeaders, ",")
 		headers.Set("Access-Control-Allow-Headers", value)
 	}
