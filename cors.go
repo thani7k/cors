@@ -53,6 +53,9 @@ type Config struct {
 
 	// Allows usage of file:// schema (dangerous!) use it only when you 100% sure it's needed
 	AllowFiles bool
+
+	// Converts AllowHeaders to lowercase instead of default CanonicalMIMEHeader format
+	UseLowerCaseHeaders bool
 }
 
 // AddAllowMethods is allowed to add custom methods
